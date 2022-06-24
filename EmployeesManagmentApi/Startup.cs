@@ -36,7 +36,7 @@ namespace EmployeesManagmentApi
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            //jeœli zapytanie zostanie wyslane nie w https to przekierowanie na https
             app.UseHttpsRedirection();
 
             app.UseRouting();
