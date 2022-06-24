@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 namespace EmployeesManagmentApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    
+    [Route("[controller]")] //controller name
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
