@@ -9,6 +9,11 @@ namespace EmployeesManagmentApi
         public EmployeeManagmentMappingProfile()
         {
             CreateMap<Employee, EmployeeDto>();
+            CreateMap<CreateEmployeeDto, Employee>();
+              
+                
+
+            
                 //.ForMember()
         }
     }

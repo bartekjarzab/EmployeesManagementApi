@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EmployeesManagmentApi.Entities;
+using EmployeesManagmentApi.Services;
 using EmployeesManagmentApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -10,37 +11,40 @@ namespace EmployeesManagmentApi.Controllers
     [Route("api/employees")]
     public class EmployeesManagmentController : ControllerBase
     {
-        private readonly EmployeesManagmentDbContext _dbContext;
-        private readonly IMapper _mapper;
-        public EmployeesManagmentController(EmployeesManagmentDbContext dbContext, IMapper mapper)
+        private readonly IEmployeesManagmentService  _employeesManagmentService;
+        public EmployeesManagmentController(IEmployeesManagmentService employeesManagmentService)
         {
-            _dbContext = dbContext;
-            _mapper = mapper;
+            _employeesManagmentService = employeesManagmentService;
         }
         [HttpGet]
-        public ActionResult<IEnumerable<Employee>> GetAll()
+        public ActionResult<IEnumerable<EmployeeDto>> GetAll()
         {
-            var employees = _dbContext
-                .Employees 
-                .ToList();
-            var employeeDtos = _mapper.Map<List<EmployeeDto>>(employees);
+            var employeeDtos = _employeesManagmentService.GetAll();
+
             return Ok(employeeDtos);
         }
-        [HttpGet("{id}")]
 
+        [HttpGet("{id}")]
         public ActionResult<EmployeeDto> Get([FromRoute] int id)
         {
-            var employee = _dbContext
-                .Employees
-                .FirstOrDefault(r => r.Id == id);
+            var employee = _employeesManagmentService.GetById(id);
             if(employee is null)
             {
                 return NotFound();
             }
-            var employeeDto = _mapper.Map<EmployeeDto>(employee);
-            return Ok(employeeDto);
+            
+            return Ok(employee);
+        }
+        [HttpPost]
+        public ActionResult CreateEmployee([FromBody] CreateEmployeeDto dto)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var id = _employeesManagmentService.Create(dto);
+
+            return Created($"/api/employees/{id}", null);
         }
     }
-
-    
 }
