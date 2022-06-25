@@ -7,7 +7,7 @@ namespace EmployeesManagmentApi.Entities
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Datebase=RestaurantDb;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=EmployeesManagmentDb;Trusted_Connection=True;");
         }
 
         public DbSet<Employee> Employees { get; set; }
@@ -20,15 +20,29 @@ namespace EmployeesManagmentApi.Entities
                 .Property(r => r.FirstName)
                 .IsRequired()
                 .HasMaxLength(32);
+            modelBuilder.Entity<Employee>()
+                .Property(r => r.LastName)
+                .IsRequired()
+                .HasMaxLength(32);
+            modelBuilder.Entity<Employee>()
+                .Property(r => r.Age)
+                .IsRequired()
+                .HasMaxLength(3);
+            modelBuilder.Entity<Employee>()
+                .Property(r => r.ContactNumber)
+                .IsRequired()
+                .HasMaxLength(9);
 
             modelBuilder.Entity<Department>()
                .Property(r => r.Name)
                .IsRequired()
                .HasMaxLength(64);
-            modelBuilder.Entity<Allocation>()
-                .HasOne(d => d.Department)
-                .WithOne(a => a.Allocation)
-                .HasForeignKey<Department>(d => d.AllocationId);
+            modelBuilder.Entity<Department>()
+                .HasOne(a => a.Allocation)
+                .WithOne(d => d.Department)
+                .HasForeignKey<Allocation>(a => a.DepartmentId);
+
+            
         }
     }
 }

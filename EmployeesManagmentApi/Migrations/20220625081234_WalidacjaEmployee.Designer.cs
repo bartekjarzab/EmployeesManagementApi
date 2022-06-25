@@ -3,14 +3,16 @@ using EmployeesManagmentApi.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EmployeesManagmentApi.Migrations
 {
     [DbContext(typeof(EmployeesManagmentDbContext))]
-    partial class EmployeesManagmentDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220625081234_WalidacjaEmployee")]
+    partial class WalidacjaEmployee
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
