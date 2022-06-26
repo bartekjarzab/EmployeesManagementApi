@@ -16,6 +16,34 @@ namespace EmployeesManagmentApi.Controllers
         {
             _employeesManagmentService = employeesManagmentService;
         }
+
+        [HttpPut("{id}")]
+        public ActionResult Update([FromBody] UpdateEmployeeDto dto, [FromRoute]int id)
+        {
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var isUpdated = _employeesManagmentService.Update(id, dto);
+
+            if(!isUpdated)
+            {
+                return NotFound();
+            }
+            return Ok();
+        }
+
+
+        [HttpDelete("{id}")]
+        public ActionResult Delete([FromRoute] int id)
+        {
+            var isDeleted = _employeesManagmentService.Delete(id);
+
+            if (isDeleted)
+            {
+                return NoContent();
+            }
+            return NotFound();
+        }
         [HttpGet]
         public ActionResult<IEnumerable<EmployeeDto>> GetAll()
         {
@@ -42,6 +70,7 @@ namespace EmployeesManagmentApi.Controllers
             {
                 return BadRequest(ModelState);
             }
+
             var id = _employeesManagmentService.Create(dto);
 
             return Created($"/api/employees/{id}", null);

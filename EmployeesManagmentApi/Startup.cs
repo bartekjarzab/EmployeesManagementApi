@@ -1,10 +1,15 @@
-using EmployeesManagmentApi.Entities;
-using EmployeesManagmentApi.Services;
+using System.Text;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using EmployeesManagmentApi.Entities;
+using EmployeesManagmentApi.Models;
+using EmployeesManagmentApi.Services;
 
 namespace EmployeesManagmentApi
 {
