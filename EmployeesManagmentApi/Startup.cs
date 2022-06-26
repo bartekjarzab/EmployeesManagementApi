@@ -32,6 +32,7 @@ namespace EmployeesManagmentApi
             services.AddAutoMapper(this.GetType().Assembly);
             services.AddScoped<IEmployeesManagmentService, EmployeesManagmentService>();
             services.AddScoped<ErrorHandlingMiddleware>();
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,7 +47,11 @@ namespace EmployeesManagmentApi
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseHttpsRedirection();
-
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "EmployeesManagment API");
+            });
             app.UseRouting();
 
             app.UseAuthorization();
