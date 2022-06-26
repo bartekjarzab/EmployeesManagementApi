@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using EmployeesManagmentApi.Entities;
 using EmployeesManagmentApi.Models;
 using EmployeesManagmentApi.Services;
+using EmployeesManagmentApi.Middleware;
 
 namespace EmployeesManagmentApi
 {
@@ -30,6 +31,7 @@ namespace EmployeesManagmentApi
             services.AddDbContext<EmployeesManagmentDbContext>();
             services.AddAutoMapper(this.GetType().Assembly);
             services.AddScoped<IEmployeesManagmentService, EmployeesManagmentService>();
+            services.AddScoped<ErrorHandlingMiddleware>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,6 +42,9 @@ namespace EmployeesManagmentApi
                 app.UseDeveloperExceptionPage();
             }
             //jeœli zapytanie zostanie wyslane nie w https to przekierowanie na https
+
+            app.UseMiddleware<ErrorHandlingMiddleware>();
+
             app.UseHttpsRedirection();
 
             app.UseRouting();

@@ -9,6 +9,7 @@ using System.Linq;
 namespace EmployeesManagmentApi.Controllers
 {
     [Route("api/employees")]
+    [ApiController]
     public class EmployeesManagmentController : ControllerBase
     {
         private readonly IEmployeesManagmentService  _employeesManagmentService;
@@ -20,15 +21,8 @@ namespace EmployeesManagmentApi.Controllers
         [HttpPut("{id}")]
         public ActionResult Update([FromBody] UpdateEmployeeDto dto, [FromRoute]int id)
         {
-            if(!ModelState.IsValid)
-                return BadRequest(ModelState);
+           _employeesManagmentService.Update(id, dto);
 
-            var isUpdated = _employeesManagmentService.Update(id, dto);
-
-            if(!isUpdated)
-            {
-                return NotFound();
-            }
             return Ok();
         }
 
@@ -36,12 +30,8 @@ namespace EmployeesManagmentApi.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete([FromRoute] int id)
         {
-            var isDeleted = _employeesManagmentService.Delete(id);
-
-            if (isDeleted)
-            {
-                return NoContent();
-            }
+             _employeesManagmentService.Delete(id);
+   
             return NotFound();
         }
         [HttpGet]
@@ -56,21 +46,12 @@ namespace EmployeesManagmentApi.Controllers
         public ActionResult<EmployeeDto> Get([FromRoute] int id)
         {
             var employee = _employeesManagmentService.GetById(id);
-            if(employee is null)
-            {
-                return NotFound();
-            }
-            
+                    
             return Ok(employee);
         }
         [HttpPost]
         public ActionResult CreateEmployee([FromBody] CreateEmployeeDto dto)
         {
-            if(!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var id = _employeesManagmentService.Create(dto);
 
             return Created($"/api/employees/{id}", null);
