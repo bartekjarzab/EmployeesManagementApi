@@ -11,29 +11,33 @@ using EmployeesManagmentApi.Exceptions;
 
 namespace EmployeesManagmentApi.Services
 {
-    public interface IEmployeesManagmentService
+    public interface IEmployeeService
     {
         void Delete(int id);
         void Update(int id, UpdateEmployeeDto dto);
         EmployeeDto GetById(int id);
+        EmployeeWithDepartmentsDto GetByIdWithDepartments(int id);
+        void UpdateEmployeeDepartments(int id, List<int> departmentsId);
 
         IEnumerable<EmployeeDto> GetAll();
 
         int Create(CreateEmployeeDto dto);
+        public List<int> GetEmployeeDepartments(int employeeId);
+        public List<String> getEmployeeDepartmentsName(List<int> departmentsIds);
     }
-    public class EmployeesManagmentService : IEmployeesManagmentService
+    public class EmployeeService : IEmployeeService
     {
         private readonly EmployeesManagmentDbContext _dbContext;
         private readonly IMapper _mapper;
-        private readonly ILogger<EmployeesManagmentService> _logger;
+        private readonly ILogger<EmployeeService> _logger;
 
-        public EmployeesManagmentService(EmployeesManagmentDbContext dbContext, IMapper mapper, ILogger<EmployeesManagmentService> logger)
+        public EmployeeService(EmployeesManagmentDbContext dbContext, IMapper mapper, ILogger<EmployeeService> logger)
         {
             _dbContext = dbContext;
             _mapper = mapper;
             _logger = logger;
         }
-        public EmployeeDto GetById(int id )
+        public EmployeeDto GetById(int id)
         {
             var employee = _dbContext
                 .Employees
@@ -42,6 +46,25 @@ namespace EmployeesManagmentApi.Services
             if (employee is null) throw new NotFoundException("Employee not found");
 
             var result = _mapper.Map<EmployeeDto>(employee);
+            return result;
+        }
+
+        
+        public EmployeeWithDepartmentsDto GetByIdWithDepartments(int id)
+        {
+            var employee = _dbContext
+                .Employees
+                .FirstOrDefault(r => r.Id == id);
+            
+            var departmentsId = GetEmployeeDepartments(id);
+            var departmentsName = getEmployeeDepartmentsName(departmentsId);
+
+            if (employee is null) throw new NotFoundException("Employee not found");
+            var mappedEmployee = _mapper.Map<EmployeeDto>(employee);
+
+            var employeeWithDepartments = new EmployeeWithDepartmentsDto(mappedEmployee, departmentsName);
+
+            var result = _mapper.Map<EmployeeWithDepartmentsDto>(employeeWithDepartments);
             return result;
         }
 
@@ -60,7 +83,7 @@ namespace EmployeesManagmentApi.Services
             employee.ContactNumber = dto.ContactNumber;
 
             _dbContext.SaveChanges();
-      
+
         }
 
         public void Delete(int id)
@@ -97,6 +120,35 @@ namespace EmployeesManagmentApi.Services
             return employee.Id;
         }
 
-        
+
+        public List<int> GetEmployeeDepartments(int employeeId)
+        {
+            var result = _dbContext
+                .Allocations
+                .Where(r => r.EmployeeId == employeeId)
+                .Select(r => r.DepartmentId);
+            var resultList = result.ToList();
+            return resultList;
+        }
+
+        public List<String> getEmployeeDepartmentsName(List<int> departmentsIds)
+        {
+            var result = _dbContext.Departments
+                .Where(r => departmentsIds.Contains(r.Id))
+                .Select(r => r.Name);
+
+            return result.ToList();
+        }
+
+        void UpdateEmployeeDepartments(int id, List<int> departmentsId)
+        {
+           foreach(var department in departmentsId)
+            {
+                var allocation = new Allocation(id, department);
+                _dbContext.Allocations.Add(allocation);
+            }
+            _dbContext.SaveChanges();
+
+        }
     }
 }

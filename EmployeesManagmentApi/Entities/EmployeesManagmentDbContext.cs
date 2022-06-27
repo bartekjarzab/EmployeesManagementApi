@@ -21,7 +21,6 @@ namespace EmployeesManagmentApi.Entities
                 .IsRequired()
                 .HasMaxLength(32);
 
-          
             modelBuilder.Entity<Employee>()
                 .Property(r => r.LastName)
                 .IsRequired()
@@ -47,7 +46,7 @@ namespace EmployeesManagmentApi.Entities
             //    .WithOne(d => d.Department)
             //    .HasForeignKey<Allocation>(a => a.DepartmentId);
 
-            
+
         }
     }
 }

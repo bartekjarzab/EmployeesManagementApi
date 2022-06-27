@@ -11,6 +11,6 @@ namespace EmployeesManagmentApi.Models
         public string ContactNumber { get; set; }
         
 
-        public List<AllocationDto> Allocations { get; set; }
+        //public List<AllocationDto> Allocations { get; set; }
     }
 }

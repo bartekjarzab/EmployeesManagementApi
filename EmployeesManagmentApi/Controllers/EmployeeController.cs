@@ -10,10 +10,10 @@ namespace EmployeesManagmentApi.Controllers
 {
     [Route("api/employees")]
     [ApiController]
-    public class EmployeeController : ControllerBase
+    public class EmployeeDepartment : ControllerBase
     {
-        private readonly IEmployeesManagmentService  _employeesManagmentService;
-        public EmployeeController(IEmployeesManagmentService employeesManagmentService)
+        private readonly IEmployeeService  _employeesManagmentService;
+        public EmployeeDepartment(IEmployeeService employeesManagmentService)
         {
             _employeesManagmentService = employeesManagmentService;
         }
@@ -21,7 +21,7 @@ namespace EmployeesManagmentApi.Controllers
         [HttpPut("{id}")]
         public ActionResult Update([FromBody] UpdateEmployeeDto dto, [FromRoute]int id)
         {
-           _employeesManagmentService.Update(id, dto);
+            _employeesManagmentService.Update(id, dto);
 
             return Ok();
         }
@@ -30,7 +30,7 @@ namespace EmployeesManagmentApi.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete([FromRoute] int id)
         {
-             _employeesManagmentService.Delete(id);
+            _employeesManagmentService.Delete(id);
    
             return NotFound();
         }
@@ -49,6 +49,13 @@ namespace EmployeesManagmentApi.Controllers
                     
             return Ok(employee);
         }
+        [HttpGet("{id}/withDepartments")]
+        public ActionResult<EmployeeWithDepartmentsDto> GetEmployeeWithDepartments([FromRoute] int id)
+        {
+            var employee = _employeesManagmentService.GetByIdWithDepartments(id);
+                    
+            return Ok(employee);
+        }
         [HttpPost]
         public ActionResult CreateEmployee([FromBody] CreateEmployeeDto dto)
         {
@@ -56,6 +63,15 @@ namespace EmployeesManagmentApi.Controllers
 
             return Created($"/api/employees/{id}", null);
         }
+
+        [HttpPost("/updateDepartments")]
+        public ActionResult UpdateEmployeeDepartment([FromBody] UpdateEmployeeDepartmentsDto dto)
+        {
+             _employeesManagmentService.UpdateEmployeeDepartments(dto.Id, dto.Departments);
+
+            return Ok();
+        }
+
 
         //public ActionResult<AllocationDto> Get([FromRoute] int employeeID, [FromRoute] )
     }

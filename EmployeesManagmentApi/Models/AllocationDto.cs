@@ -8,7 +8,7 @@ namespace EmployeesManagmentApi.Models
         public int EmployeeId { get; set; }
         public int DepartmentId { get; set; }
 
-        public List <DepartmentDto> Deparments { get; set; }
+        //public List <DepartmentDto> Deparments { get; set; }
 
     }
 }

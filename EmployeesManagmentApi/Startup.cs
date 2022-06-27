@@ -30,8 +30,9 @@ namespace EmployeesManagmentApi
             services.AddControllers();
             services.AddDbContext<EmployeesManagmentDbContext>();
             services.AddAutoMapper(this.GetType().Assembly);
-            services.AddScoped<IEmployeesManagmentService, EmployeesManagmentService>();
+            services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IAllocationService, AllocationService>();
+            services.AddScoped<IDepartmentService, DepartmentService>();
             services.AddScoped<ErrorHandlingMiddleware>();
             services.AddSwaggerGen();
         }
