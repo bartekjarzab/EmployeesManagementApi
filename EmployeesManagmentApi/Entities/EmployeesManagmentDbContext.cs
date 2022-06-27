@@ -20,14 +20,18 @@ namespace EmployeesManagmentApi.Entities
                 .Property(r => r.FirstName)
                 .IsRequired()
                 .HasMaxLength(32);
+
+          
             modelBuilder.Entity<Employee>()
                 .Property(r => r.LastName)
                 .IsRequired()
                 .HasMaxLength(32);
+
             modelBuilder.Entity<Employee>()
                 .Property(r => r.Age)
                 .IsRequired()
                 .HasMaxLength(3);
+
             modelBuilder.Entity<Employee>()
                 .Property(r => r.ContactNumber)
                 .IsRequired()
@@ -37,10 +41,11 @@ namespace EmployeesManagmentApi.Entities
                .Property(r => r.Name)
                .IsRequired()
                .HasMaxLength(64);
-            modelBuilder.Entity<Department>()
-                .HasOne(a => a.Allocation)
-                .WithOne(d => d.Department)
-                .HasForeignKey<Allocation>(a => a.DepartmentId);
+
+            //modelBuilder.Entity<Department>()
+            //    .HasOne(a => a.Allocation)
+            //    .WithOne(d => d.Department)
+            //    .HasForeignKey<Allocation>(a => a.DepartmentId);
 
             
         }

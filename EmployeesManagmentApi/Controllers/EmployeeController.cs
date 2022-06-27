@@ -10,10 +10,10 @@ namespace EmployeesManagmentApi.Controllers
 {
     [Route("api/employees")]
     [ApiController]
-    public class EmployeesManagmentController : ControllerBase
+    public class EmployeeController : ControllerBase
     {
         private readonly IEmployeesManagmentService  _employeesManagmentService;
-        public EmployeesManagmentController(IEmployeesManagmentService employeesManagmentService)
+        public EmployeeController(IEmployeesManagmentService employeesManagmentService)
         {
             _employeesManagmentService = employeesManagmentService;
         }
@@ -56,5 +56,7 @@ namespace EmployeesManagmentApi.Controllers
 
             return Created($"/api/employees/{id}", null);
         }
+
+        //public ActionResult<AllocationDto> Get([FromRoute] int employeeID, [FromRoute] )
     }
 }
