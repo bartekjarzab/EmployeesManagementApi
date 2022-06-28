@@ -34,7 +34,12 @@ namespace EmployeesManagmentApi.Entities
             modelBuilder.Entity<Employee>()
                 .Property(r => r.ContactNumber)
                 .IsRequired()
-                .HasMaxLength(9);
+                .HasMaxLength(9);  
+            
+            modelBuilder.Entity<Department>()
+                .Property(d => d.Name)
+                .IsRequired()
+                .HasMaxLength(32);
 
             modelBuilder.Entity<Department>()
                .Property(r => r.Name)

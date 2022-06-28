@@ -17,7 +17,7 @@ namespace EmployeesManagmentApi.Services
         void Update(int id, UpdateEmployeeDto dto);
         EmployeeDto GetById(int id);
         EmployeeWithDepartmentsDto GetByIdWithDepartments(int id);
-        void UpdateEmployeeDepartments(int id, List<int> departmentsId);
+        public void UpdateEmployeeDepartments(int id, List<int> departmentsId);
 
         IEnumerable<EmployeeDto> GetAll();
 
@@ -140,7 +140,7 @@ namespace EmployeesManagmentApi.Services
             return result.ToList();
         }
 
-        void UpdateEmployeeDepartments(int id, List<int> departmentsId)
+        public void UpdateEmployeeDepartments(int id, List<int> departmentsId)
         {
            foreach(var department in departmentsId)
             {
