@@ -18,7 +18,7 @@ namespace EmployeesManagmentApi.Services
         EmployeeDto GetById(int id);
         EmployeeWithDepartmentsDto GetByIdWithDepartments(int id);
         public void UpdateEmployeeDepartments(int id, List<int> departmentsId);
-
+        public List<EmployeeWithDepartmentsDto> GetAllEmployeesWithDepartments();
         IEnumerable<EmployeeDto> GetAll();
 
         int Create(CreateEmployeeDto dto);
@@ -148,7 +148,23 @@ namespace EmployeesManagmentApi.Services
                 _dbContext.Allocations.Add(allocation);
             }
             _dbContext.SaveChanges();
+            
+        }
+        public List<EmployeeWithDepartmentsDto> GetAllEmployeesWithDepartments()
+        {
+            var employees = GetAll();
 
+            var employeesWithDepartments = new List<EmployeeWithDepartmentsDto>();
+
+            foreach (var employee in employees)
+            {
+                var employeeDepartments = GetEmployeeDepartments(employee.Id);
+                var employeeDepartmentsName = getEmployeeDepartmentsName(employeeDepartments);
+                var mappedEmployee = _mapper.Map<EmployeeDto>(employee);
+                employeesWithDepartments.Add(new EmployeeWithDepartmentsDto(mappedEmployee,employeeDepartmentsName));
+            } 
+
+            return employeesWithDepartments;
         }
     }
 }

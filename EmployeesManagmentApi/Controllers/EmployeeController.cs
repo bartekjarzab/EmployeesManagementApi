@@ -64,7 +64,7 @@ namespace EmployeesManagmentApi.Controllers
             return Created($"/api/employees/{id}", null);
         }
 
-        [HttpPost("/updateDepartments")]
+        [HttpPost("/api/updateDepartments")]
         public ActionResult UpdateEmployeeDepartment([FromBody] UpdateEmployeeDepartmentsDto dto)
         {
              _employeesManagmentService.UpdateEmployeeDepartments(dto.Id, dto.Departments);
@@ -72,7 +72,14 @@ namespace EmployeesManagmentApi.Controllers
             return Ok();
         }
 
+        [HttpGet("/api/employeesWithDepartments")]
+        public ActionResult<List<EmployeeWithDepartmentsDto>> GetAllWithDepartments()
+        {
+            var employee = _employeesManagmentService.GetAllEmployeesWithDepartments();
 
-        //public ActionResult<AllocationDto> Get([FromRoute] int employeeID, [FromRoute] )
+            return Ok(employee);
+        }
+
+        
     }
 }
